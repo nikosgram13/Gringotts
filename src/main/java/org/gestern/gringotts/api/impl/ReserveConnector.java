@@ -630,7 +630,6 @@ public class ReserveConnector implements EconomyAPI {
    */
   @Override
   public EconomyResponse canAddHoldingsDetail(String identifier, BigDecimal amount) {
-    if (!hasAccount(identifier)) return AccountResponse.DOESNT_EXIST;
     if (!hasAccount(identifier) && !createAccount(identifier)) return AccountResponse.CREATION_FAILED;
 
     return GeneralResponse.SUCCESS;
@@ -645,7 +644,6 @@ public class ReserveConnector implements EconomyAPI {
    */
   @Override
   public EconomyResponse canAddHoldingsDetail(UUID identifier, BigDecimal amount) {
-    if (!hasAccount(identifier)) return AccountResponse.DOESNT_EXIST;
     if (!hasAccount(identifier) && !createAccount(identifier)) return AccountResponse.CREATION_FAILED;
 
     return GeneralResponse.SUCCESS;
@@ -787,7 +785,6 @@ public class ReserveConnector implements EconomyAPI {
    */
   @Override
   public EconomyResponse canRemoveHoldingsDetail(String identifier, BigDecimal amount) {
-    if (!hasAccount(identifier)) return AccountResponse.DOESNT_EXIST;
     if (!hasAccount(identifier) && !createAccount(identifier)) return AccountResponse.CREATION_FAILED;
     if (hasHoldings(identifier, amount)) return HoldingsResponse.INSUFFICIENT;
     return GeneralResponse.SUCCESS;
@@ -802,7 +799,6 @@ public class ReserveConnector implements EconomyAPI {
    */
   @Override
   public EconomyResponse canRemoveHoldingsDetail(UUID identifier, BigDecimal amount) {
-    if (!hasAccount(identifier)) return AccountResponse.DOESNT_EXIST;
     if (!hasAccount(identifier) && !createAccount(identifier)) return AccountResponse.CREATION_FAILED;
     if (hasHoldings(identifier, amount)) return HoldingsResponse.INSUFFICIENT;
     return GeneralResponse.SUCCESS;
