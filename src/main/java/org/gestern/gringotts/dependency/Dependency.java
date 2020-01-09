@@ -22,6 +22,7 @@ public enum Dependency {
     DEP;
 
     public final FactionsHandler   factions;
+    public final DependencyHandler reserve;
     public final TownyHandler      towny;
     public final DependencyHandler vault;
     public final WorldGuardHandler worldguard;
@@ -36,6 +37,10 @@ public enum Dependency {
                 "Factions",
                 "com.massivecraft.factions.TerritoryAccess",
                 "2.12.0"));
+        reserve = new GenericHandler(hookPlugin(
+            "Reserve",
+            "net.tnemc.core.Reserve",
+            "0.1.4.6"));
         towny = TownyHandler.getTownyHandler(hookPlugin(
                 "Towny",
                 "com.palmergames.bukkit.towny.Towny",

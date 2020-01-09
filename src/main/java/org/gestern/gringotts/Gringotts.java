@@ -9,6 +9,7 @@ import com.avaje.ebeaninternal.api.SpiEbeanServer;
 import com.avaje.ebeaninternal.server.ddl.DdlGenerator;
 import com.avaje.ebeaninternal.server.lib.sql.TransactionIsolation;
 import net.milkbowl.vault.economy.Economy;
+import net.tnemc.core.Reserve;
 import org.apache.commons.lang.Validate;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -24,6 +25,7 @@ import org.gestern.gringotts.accountholder.AccountHolderFactory;
 import org.gestern.gringotts.accountholder.AccountHolderProvider;
 import org.gestern.gringotts.api.Eco;
 import org.gestern.gringotts.api.impl.GringottsEco;
+import org.gestern.gringotts.api.impl.ReserveConnector;
 import org.gestern.gringotts.api.impl.VaultConnector;
 import org.gestern.gringotts.commands.GringottsExecutor;
 import org.gestern.gringotts.commands.MoneyExecutor;
@@ -215,14 +217,21 @@ public class Gringotts extends JavaPlugin {
 
 
     /**
-     * Register Gringotts as economy provider for vault.
+     * Register Gringotts as economy provider for vault/Reserve.
      */
     private void registerEconomy() {
         if (DEP.vault.exists()) {
             getServer().getServicesManager().register(Economy.class, new VaultConnector(), this, ServicePriority.Highest);
             getLogger().info("Registered Vault interface.");
-        } else {
-            getLogger().info("Vault not found. Other plugins may not be able to access Gringotts accounts.");
+        }
+
+        if (DEP.reserve.exists()) {
+            Reserve.instance().registerProvider(new ReserveConnector());
+            getLogger().info("Registered Reserve interface.");
+        }
+
+        if(!DEP.vault.exists() && !DEP.reserve.exists()) {
+            getLogger().info("Neither Vault or Reserve was found. Other plugins may not be able to access Gringotts accounts.");
         }
     }
 
