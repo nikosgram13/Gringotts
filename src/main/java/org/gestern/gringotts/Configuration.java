@@ -201,6 +201,15 @@ public enum Configuration {
                         }
                     }
 
+                    if (denomConf.contains("customModelData")) {
+                        int customModelData = denomConf.getInt("customModelData"); // returns 0 when path is unset
+                        ItemMeta meta = denomType.getItemMeta();
+                        if (meta != null) {
+                            meta.setCustomModelData(customModelData);
+                            denomType.setItemMeta(meta);
+                        }
+                    }
+
                     ItemMeta meta = denomType.getItemMeta();
 
                     String name = denomConf.getString("displayname");
