@@ -6,7 +6,7 @@
     <version>2.11.2-SNAPSHOT</version>
 
     <build>
-        <finalName>${project.artifactId}-${project.version}-r${buildNumber}</finalName>
+        <finalName>${project.artifactId}-${project.version}</finalName>
         <resources>
             <resource>
                 <directory>${basedir}</directory>
@@ -55,16 +55,13 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.2</version>
+                <version>3.1.0</version>
+                <!-- Do not include the <configuration>...</configuration> part if you are using Sponge! -->
                 <configuration>
-                    <artifactSet>
-                        <excludes>
-                            <exclude>org.apache.derby:derby</exclude>
-                        </excludes>
-                    </artifactSet>
                     <relocations>
                         <relocation>
                             <pattern>org.bstats</pattern>
+                            <!-- Replace this with your package! -->
                             <shadedPattern>org.gestern.gringotts</shadedPattern>
                         </relocation>
                     </relocations>
@@ -78,26 +75,11 @@
                     </execution>
                 </executions>
             </plugin>
+
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
-                <artifactId>buildnumber-maven-plugin</artifactId>
-                <version>1.4</version>
-                <executions>
-                    <execution>
-                        <configuration>
-                            <useLastCommittedRevision>true</useLastCommittedRevision>
-                        </configuration>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>create</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <doCheck>true</doCheck>
-                    <doUpdate>true</doUpdate>
-                    <shortRevisionLength>7</shortRevisionLength>
-                </configuration>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.2</version>
             </plugin>
         </plugins>
     </build>
@@ -106,36 +88,28 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.15.2-R0.1-SNAPSHOT</version>
+            <version>1.12.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.derby</groupId>
             <artifactId>derby</artifactId>
-            <version>10.9.1.0</version>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.palmergames.bukkit.towny</groupId>
-            <artifactId>Towny</artifactId>
-            <version>0.95.2.22</version>
-            <scope>provided</scope>
-            <optional>true</optional>
+            <version>10.13.1.1</version>
         </dependency>
         <dependency>
             <groupId>net.tnemc</groupId>
             <artifactId>Reserve</artifactId>
-            <version>0.1.4.6</version>
+            <version>0.1.5.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.bstats</groupId>
             <artifactId>bstats-bukkit</artifactId>
-            <version>1.7</version>
+            <version>1.8</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>net.milkbowl.vault</groupId>
+            <groupId>com.github.MilkBowl</groupId>
             <artifactId>VaultAPI</artifactId>
             <version>1.7</version>
             <scope>provided</scope>
@@ -143,8 +117,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.10</version>
-            <scope>test</scope>
+            <version>4.13.1</version>
         </dependency>
         <dependency>
             <groupId>org.avaje</groupId>
@@ -172,13 +145,12 @@
         <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
-            <version>17.0.0</version>
-            <scope>compile</scope>
+            <version>20.1.0</version>
         </dependency>
         <dependency>
             <groupId>io.papermc</groupId>
             <artifactId>paperlib</artifactId>
-            <version>1.0.2</version>
+            <version>1.0.6</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -188,6 +160,14 @@
             <scope>system</scope>
             <systemPath>${basedir}/libs/CustomItemsAPI_PLACEHOLDER.jar</systemPath>
         </dependency>
+
+        <dependency>
+            <groupId>com.github.TownyAdvanced</groupId>
+            <artifactId>Towny</artifactId>
+            <version>0.96.2.0</version>
+            <scope>provided</scope>
+        </dependency>
+
     </dependencies>
 
     <properties>
@@ -214,10 +194,6 @@
         You'll need to setup your settings.xml file
         Read more here: https://github.com/TownyAdvanced/Towny/wiki/TownyAPI
          -->
-        <repository>
-            <id>github-towny</id>
-            <url>https://maven.pkg.github.com/TownyAdvanced/Towny</url>
-        </repository>
         <repository>
             <id>CodeMC</id>
             <url>https://repo.codemc.org/repository/maven-public</url>
