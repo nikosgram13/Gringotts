@@ -11,7 +11,6 @@ import com.avaje.ebeaninternal.server.lib.sql.TransactionIsolation;
 import net.milkbowl.vault.economy.Economy;
 import org.apache.commons.lang.NullArgumentException;
 import org.apache.commons.lang.Validate;
-import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.PluginCommand;
@@ -158,7 +157,6 @@ public class Gringotts extends JavaPlugin {
                 getLogger().info("Registered Reserve interface.");
             }
 
-            registerMetrics();
         } catch (GringottsStorageException | GringottsConfigurationException e) {
             getLogger().severe(e.getMessage());
             this.disable();
@@ -273,82 +271,6 @@ public class Gringotts extends JavaPlugin {
         }
 
         getLogger().info("disabled");
-    }
-
-    private void registerMetrics() {
-        // Setup Metrics support.
-        Metrics metrics = new Metrics(this, 4998);
-
-        // Tracking how many vaults exists.
-        metrics.addCustomChart(new Metrics.SingleLineChart("vaultsChart", () -> {
-            int returned = 0;
-
-            for (OfflinePlayer player : Bukkit.getOfflinePlayers()) {
-                AccountHolder holder = accountHolderFactory.get(player);
-                GringottsAccount account = accounting.getAccount(holder);
-
-                returned += Gringotts.getInstance().getDao().retrieveChests(account).size();
-            }
-
-            return returned;
-        }));
-
-        // Tracking the balance of the users exists.
-        metrics.addCustomChart(new Metrics.SingleLineChart("economyChart", () -> {
-            int returned = 0;
-
-            for (OfflinePlayer player : Bukkit.getOfflinePlayers()) {
-                if (!player.hasPlayedBefore()) {
-                    continue;
-                }
-                if (player.isOp()) {
-                    continue;
-                }
-
-                AccountHolder holder = accountHolderFactory.get(player);
-                GringottsAccount account = accounting.getAccount(holder);
-
-                returned += account.getBalance();
-            }
-
-            return returned;
-        }));
-
-        // Tracking the exists denominations.
-        metrics.addCustomChart(new Metrics.AdvancedPie("denominationsChart", () -> {
-            Map<String, Integer> returned = new HashMap<>();
-
-            for (Denomination denomination : CONF.getCurrency().getDenominations()) {
-                String name = denomination.getKey().type.getType().name();
-
-                if (!returned.containsKey(name)) {
-                    returned.put(name, 0);
-                }
-
-                returned.put(name, returned.get(name) + 1);
-            }
-
-            return returned;
-        }));
-
-        metrics.addCustomChart(new Metrics.DrilldownPie("dependencies", () -> {
-            Map<String, Map<String, Integer>> returned = new HashMap<>();
-
-            for (Dependency dependency : this.dependencies) {
-                if (dependency.isEnabled()) {
-                    String name = dependency.getName();
-                    String version = dependency.getVersion();
-
-                    if (name != null && version != null) {
-                        returned.put(name, new HashMap<String, Integer>() {{
-                            put(version, 1);
-                        }});
-                    }
-                }
-            }
-
-            return returned;
-        }));
     }
 
     private void registerCommands() {

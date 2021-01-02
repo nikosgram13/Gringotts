@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>minecraftwars</groupId>
     <artifactId>Gringotts</artifactId>
-    <version>2.12.0</version>
+    <version>2.12.1</version>
 
     <build>
         <plugins>
@@ -34,11 +34,8 @@
                                     <exclude>org.spigotmc:spigot-api</exclude>
                                     <exclude>com.towny:Towny</exclude>
                                     <exclude>com.github.MilkBowl:VaultAPI</exclude>
-                                    <exclude>com.github.MilkBowl:VaultAPI</exclude>
                                     <exclude>com.sk89q.worldguard:worldguard-bukkit</exclude>
                                     <exclude>com.sk89q.worldedit:worldedit-bukkit</exclude>
-                                    <exclude>com.destroystokyo.paper:paper-api</exclude>
-                                    <exclude>com.destroystokyo.paper:paper-api</exclude>
                                 </excludes>
                             </artifactSet>
                         </configuration>
@@ -97,10 +94,10 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.destroystokyo.paper</groupId>
-            <artifactId>paper-api</artifactId>
-            <version>1.16.4-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
+            <groupId>io.papermc</groupId>
+            <artifactId>paperlib</artifactId>
+            <version>1.0.6</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.jetbrains</groupId>
@@ -117,12 +114,6 @@
             <artifactId>Reserve</artifactId>
             <version>0.1.4.8</version>
         </dependency>
-        <dependency>
-            <groupId>org.bstats</groupId>
-            <artifactId>bstats-bukkit</artifactId>
-            <version>1.8</version>
-            <scope>compile</scope>
-        </dependency>
     </dependencies>
 
     <properties>
@@ -130,14 +121,6 @@
     </properties>
 
     <repositories>
-        <!--
-        You'll need to setup your settings.xml file
-        Read more here: https://github.com/TownyAdvanced/Towny/wiki/TownyAPI
-         -->
-        <repository>
-            <id>CodeMC</id>
-            <url>https://repo.codemc.org/repository/maven-public</url>
-        </repository>
         <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
